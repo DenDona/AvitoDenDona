@@ -18,7 +18,7 @@ class UserCreateDTO:
     email: str | None = None
 
 
-@dataclass(slots=True, kw_only=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class UserUpdateDTO(ToDictMixin):
     phone: str | None | Unset = UNSET
     avatar_url: str | None | Unset = UNSET

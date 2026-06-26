@@ -19,8 +19,9 @@ export default function ChatRoom() {
     const cid = Number(id)
     fetchMessages(cid).then(setMessages)
 
-    const proto = location.protocol === 'https:' ? 'wss' : 'ws'
-    const ws = new WebSocket(`${proto}://${location.host}/v1/chat/ws/${cid}?token=${token}`)
+    const apiUrl = import.meta.env.VITE_API_URL ?? '/v1'
+    const wsBase = apiUrl.replace(/^https?/, (p) => (p === 'https' ? 'wss' : 'ws'))
+    const ws = new WebSocket(`${wsBase}/chat/ws/${cid}?token=${token}`)
     wsRef.current = ws
     ws.onmessage = (e) => {
       try {

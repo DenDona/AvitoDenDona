@@ -15,7 +15,11 @@ from app.ports.rest.router import router as api_router
 app = FastAPI(title="DenDona API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://avito.dendona.ru",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

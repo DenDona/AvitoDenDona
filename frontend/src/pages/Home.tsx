@@ -5,8 +5,6 @@ import { fetchCategories } from '../api/categories'
 import PostCard from '../components/PostCard'
 import type { Post, Category, PostCondition } from '../types'
 
-const CITIES = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород', 'Краснодар']
-
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [posts, setPosts] = useState<Post[]>([])
@@ -84,14 +82,6 @@ export default function Home() {
               onBlur={e => set('max_price', e.target.value || undefined)}
             />
           </div>
-        </div>
-
-        <div className="card p-4 space-y-3">
-          <h3 className="font-semibold text-sm text-avito-muted uppercase tracking-wide">Город</h3>
-          <select className="input text-sm" value={city || ''} onChange={e => set('city', e.target.value || undefined)}>
-            <option value="">Все города</option>
-            {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
         </div>
 
         <div className="card p-4 space-y-3">

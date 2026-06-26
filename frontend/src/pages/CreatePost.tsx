@@ -6,8 +6,6 @@ import { uploadImage } from '../api/upload'
 import { useAuthStore } from '../store/auth'
 import type { Category, PostCondition, PostStatus } from '../types'
 
-const CITIES = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород', 'Краснодар']
-
 export default function CreatePost() {
   const { id } = useParams<{ id: string }>()
   const isEdit = Boolean(id)
@@ -129,11 +127,8 @@ export default function CreatePost() {
             <input className="input" type="number" min={0} value={form.price} onChange={e => set('price', e.target.value)} placeholder="0 — договорная" />
           </div>
           <div>
-            <label className="label">Город</label>
-            <select className="input" value={form.city} onChange={e => set('city', e.target.value)}>
-              <option value="">Выберите город</option>
-              {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <label className="label">Местонахождение</label>
+            <input className="input" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Например: Москва" />
           </div>
         </div>
 

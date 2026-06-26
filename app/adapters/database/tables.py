@@ -1,4 +1,4 @@
-from sqlalchemy import String, Text, Numeric, ForeignKey, Enum
+from sqlalchemy import String, Text, Numeric, ForeignKey, Enum, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.adapters.database.mixins import Base, IdMixin, TimestampSoftDeleteMixin
@@ -47,3 +47,48 @@ class PostTable(Base, IdMixin, TimestampSoftDeleteMixin):
     created_by_id: Mapped[int] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE")
     )
+
+
+class PostImageTable(Base, IdMixin):
+    __tablename__ = "post_images"
+
+    post_id: Mapped[int] = mapped_column(
+        ForeignKey("posts.id", ondelete="CASCADE"), nullable=False
+    )
+    url: Mapped[str] = mapped_column(String, nullable=False)
+    order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
+class ConversationTable(Base, IdMixin, TimestampSoftDeleteMixin):
+    __tablename__ = "conversations"
+
+    buyer_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    seller_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
+
+
+class MessageTable(Base, IdMixin, TimestampSoftDeleteMixin):
+    __tablename__ = "messages"
+
+    conversation_id: Mapped[int] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE"), nullable=False
+    )
+    sender_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    is_read: Mapped[bool] = mapped_column(nullable=False, default=False)
+
+
+class FavoriteTable(Base, IdMixin, TimestampSoftDeleteMixin):
+    __tablename__ = "favorites"
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"), nullable=False)
+
+
+class ReviewTable(Base, IdMixin, TimestampSoftDeleteMixin):
+    __tablename__ = "reviews"
+
+    from_user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    to_user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    rating: Mapped[int] = mapped_column(nullable=False)
+    text: Mapped[str | None] = mapped_column(Text, nullable=True)

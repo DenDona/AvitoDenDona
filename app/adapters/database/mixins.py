@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class IdMixin:
@@ -24,3 +24,6 @@ class TimestampSoftDeleteMixin:
         DateTime(timezone=True),
         nullable=True,
     )
+
+class Base(DeclarativeBase):
+    pass

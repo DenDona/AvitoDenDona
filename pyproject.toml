@@ -4,4 +4,16 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "alembic",
+    "asyncpg",
+    "dishka",
+    "fastapi",
+    "mypy>=1.20.0",
+    "pydantic-settings",
+    "pyjwt",
+    "redis",
+    "ruff>=0.15.8",
+    "sqlalchemy",
+    "uvicorn",
+]

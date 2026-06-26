@@ -1,16 +1,13 @@
 from collections.abc import Sequence
 
-
 from app.adapters.database.repositories.post import PostRepository
-from app.application.dto.post import PostCreateDTO, PostResponseDTO, PostUpdateDTO, ExistsParamsDTO
+from app.application.dto.post import PostCreateDTO, PostResponseDTO, PostUpdateDTO, ExistsParamsDTO, PostFilterDTO
 from app.application.dto.user import UserResponseDTO
 from app.application.enums.user_role import UserRole
 from app.cammon.exceptions import (
-    EntityAlreadyExists,
     PermissionDeniedException,
-    EntityNotFoundException
+    EntityNotFoundException,
 )
-
 
 
 class PostService:
@@ -24,10 +21,8 @@ class PostService:
         if not await self._repository.exists(params=ExistsParamsDTO(id=post_id)):
             raise EntityNotFoundException("post", post_id)
         if user.role not in [UserRole.ADMINISTRATOR, UserRole.MODERATOR]:
-            is_owner = await self._repository.check_owner(post_id, user)
-            if not is_owner:
+            if not await self._repository.check_owner(post_id, user):
                 raise PermissionDeniedException
-
         await self._repository.update_by_id(post_dto=post_dto, post_id=post_id)
         return await self._repository.fetch_by_id(post_id=post_id)
 
@@ -41,14 +36,13 @@ class PostService:
             raise PermissionDeniedException
         return await self._repository.fetch_list()
 
-    async def fetch_list_as_user(self) -> Sequence[PostResponseDTO]:
-        return await self._repository.fetch_list_as_user()
+    async def fetch_list_as_user(self, filters: PostFilterDTO) -> tuple[Sequence[PostResponseDTO], int]:
+        return await self._repository.fetch_list_as_user(filters=filters)
 
     async def delete_soft(self, post_id: int, user: UserResponseDTO) -> None:
         if not await self._repository.exists(params=ExistsParamsDTO(id=post_id)):
             raise EntityNotFoundException("post", post_id)
         if user.role not in [UserRole.ADMINISTRATOR, UserRole.MODERATOR]:
-            is_owner = await self._repository.check_owner(post_id, user)
-            if not is_owner:
+            if not await self._repository.check_owner(post_id, user):
                 raise PermissionDeniedException
         await self._repository.delete_soft(post_id=post_id, user_id=user.id)

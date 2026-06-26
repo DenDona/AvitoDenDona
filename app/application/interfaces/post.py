@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from app.application.dto.post import PostCreateDTO, PostUpdateDTO, PostResponseDTO, ExistsParamsDTO
+from app.application.dto.post import PostCreateDTO, PostUpdateDTO, PostResponseDTO, ExistsParamsDTO, PostFilterDTO
 
 
 class IPostRepository(ABC):
@@ -22,7 +22,7 @@ class IPostRepository(ABC):
         pass
 
     @abstractmethod
-    async def fetch_list_as_user(self) -> Sequence[PostResponseDTO]:
+    async def fetch_list_as_user(self, filters: PostFilterDTO) -> tuple[Sequence[PostResponseDTO], int]:
         pass
 
     @abstractmethod

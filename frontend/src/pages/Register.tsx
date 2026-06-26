@@ -18,6 +18,7 @@ export default function Register() {
     try {
       await register({ username: form.username, email: form.email || undefined, password: form.password })
       const { access_token } = await login({ login: form.username, password: form.password })
+      localStorage.setItem('token', access_token)
       const user = await getMe()
       setAuth(user, access_token)
       navigate('/')

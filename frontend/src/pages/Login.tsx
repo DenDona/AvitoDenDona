@@ -16,6 +16,7 @@ export default function Login() {
     setError('')
     try {
       const { access_token } = await login(form)
+      localStorage.setItem('token', access_token)
       const user = await getMe()
       setAuth(user, access_token)
       navigate('/')

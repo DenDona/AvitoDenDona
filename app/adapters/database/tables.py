@@ -5,6 +5,14 @@ from app.adapters.database.mixins import Base, IdMixin, TimestampSoftDeleteMixin
 from app.application.enums.user_role import UserRole
 
 
+class CategoryTable(Base, IdMixin, TimestampSoftDeleteMixin):
+    __tablename__ = "categories"
+
+    name: Mapped[str] = mapped_column(String(128), unique=True, nullable=False)
+    parent_id: Mapped[int | None] = mapped_column(
+        ForeignKey("categories.id", ondelete="SET NULL"), nullable=True
+    )
+
 
 class UserTable(Base, IdMixin, TimestampSoftDeleteMixin):
     __tablename__ = "users"
@@ -22,9 +30,9 @@ class PostTable(Base, IdMixin, TimestampSoftDeleteMixin):
     description: Mapped[str] = mapped_column(Text, nullable=True)
     image_url: Mapped[str] = mapped_column(String, nullable=True)
     price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=True)
+    category_id: Mapped[int | None] = mapped_column(
+        ForeignKey("categories.id", ondelete="SET NULL"), nullable=True
+    )
     created_by_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            "users.id",
-            ondelete="CASCADE",
-        )
+        ForeignKey("users.id", ondelete="CASCADE")
     )

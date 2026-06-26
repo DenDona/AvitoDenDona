@@ -21,10 +21,7 @@ class PostRepository(IPostRepository):
 
     async def check_owner(self, post_id: int, user: UserResponseDTO) -> bool:
         post = await self.fetch_by_id(post_id=post_id)
-        if post.created_by_id == user.id:
-            return True
-        else:
-            return False
+        return post.created_by_id == user.id
 
     async def create(self, post_dto: PostCreateDTO) -> PostResponseDTO:
         stmt = (
@@ -33,6 +30,7 @@ class PostRepository(IPostRepository):
                 description=post_dto.description,
                 image_url=post_dto.image_url,
                 price=post_dto.price,
+                category_id=post_dto.category_id,
                 created_by_id=post_dto.created_by_id,
             )
         ).returning(PostTable)
@@ -57,25 +55,18 @@ class PostRepository(IPostRepository):
         return converter_post(result=result)
 
     async def fetch_list(self) -> Sequence[PostResponseDTO]:
-        stmt = (
-            select(PostTable)
-            .order_by(PostTable.created_at.desc())
-        )
+        stmt = select(PostTable).order_by(PostTable.created_at.desc())
         result = await self.__session.execute(stmt)
-        posts = result.scalars().all()
-
-        return [converter_post(result=post) for post in posts]
+        return [converter_post(result=post) for post in result.scalars().all()]
 
     async def fetch_list_as_user(self) -> Sequence[PostResponseDTO]:
         stmt = (
             select(PostTable)
-            .where(PostTable.deleted_at == None)
+            .where(PostTable.deleted_at.is_(None))
             .order_by(PostTable.created_at.desc())
         )
         result = await self.__session.execute(stmt)
-        posts = result.scalars().all()
-
-        return [converter_post(result=post) for post in posts]
+        return [converter_post(result=post) for post in result.scalars().all()]
 
     async def delete_soft(self, post_id: int, user_id: int) -> None:
         stmt = (
@@ -83,17 +74,9 @@ class PostRepository(IPostRepository):
             .where(
                 PostTable.id == post_id,
                 PostTable.created_by_id == user_id,
-                PostTable.deleted_at.is_(None)
+                PostTable.deleted_at.is_(None),
             )
-            .values(
-                deleted_at=func.now(),
-                updated_at=func.now()
-            )
+            .values(deleted_at=func.now(), updated_at=func.now())
         )
-
         await self.__session.execute(stmt)
         await self.__session.commit()
-
-
-
-

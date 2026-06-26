@@ -38,3 +38,12 @@ async def update_profile(
     dto = UserUpdateDTO(**payload.model_dump(exclude_unset=True))
     user = await service.update_profile(user_id=current_user.id, dto=dto)
     return UserResponse.model_validate(user)
+
+
+@user_router.get("/{user_id}", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def get_user(
+    user_id: int,
+    service: FromDishka[UserService],
+) -> UserResponse:
+    user = await service.get_by_id(user_id)
+    return UserResponse.model_validate(user)

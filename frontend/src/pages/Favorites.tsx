@@ -24,7 +24,7 @@ export default function Favorites() {
     <div>
       <h1 className="text-2xl font-bold mb-6">Избранное</h1>
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {Array.from({ length: 4 }).map((_, i) => <div key={i} className="card animate-pulse h-60" />)}
         </div>
       ) : posts.length === 0 ? (
@@ -33,7 +33,7 @@ export default function Favorites() {
           <p className="text-lg">В избранном пока ничего нет</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {posts.map(p => <PostCard key={p.id} post={p} />)}
         </div>
       )}

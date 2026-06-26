@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchReviews, getRatingSummary, createReview } from '../api/reviews'
+import { fetchUser } from '../api/users'
 import { useAuthStore } from '../store/auth'
 import StarRating from '../components/StarRating'
-import type { Review, RatingSummary } from '../types'
+import type { Review, RatingSummary, User } from '../types'
 
 export default function UserPublicProfile() {
   const { id } = useParams<{ id: string }>()
   const { user } = useAuthStore()
+  const [profile, setProfile] = useState<User | null>(null)
   const [reviews, setReviews] = useState<Review[]>([])
   const [rating, setRating] = useState<RatingSummary | null>(null)
   const [loading, setLoading] = useState(true)
@@ -20,8 +22,8 @@ export default function UserPublicProfile() {
 
   useEffect(() => {
     if (!id) return
-    Promise.all([fetchReviews(userId), getRatingSummary(userId)])
-      .then(([rev, rat]) => { setReviews(rev); setRating(rat) })
+    Promise.all([fetchReviews(userId), getRatingSummary(userId), fetchUser(userId)])
+      .then(([rev, rat, prof]) => { setReviews(rev); setRating(rat); setProfile(prof) })
       .finally(() => setLoading(false))
   }, [id])
 
@@ -45,11 +47,15 @@ export default function UserPublicProfile() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="card p-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-avito-blue flex items-center justify-center text-white text-2xl font-bold">
-            {userId}
+          <div className="w-16 h-16 rounded-full bg-avito-blue overflow-hidden flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+            ) : (
+              profile?.username[0]?.toUpperCase() ?? userId
+            )}
           </div>
-          <div>
-            <h1 className="text-xl font-bold">Продавец #{userId}</h1>
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold truncate">{profile?.username ?? `Продавец #${userId}`}</h1>
             {rating && (
               <div className="flex items-center gap-2 mt-1">
                 <StarRating rating={rating.average_rating} />

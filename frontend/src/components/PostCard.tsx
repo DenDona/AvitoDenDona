@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Post } from '../types'
-
-const NO_IMAGE = 'https://via.placeholder.com/300x200?text=Нет+фото'
+import { NO_IMAGE } from '../lib/placeholder'
 
 const CONDITION_LABELS: Record<string, string> = { new: 'Новый', used: 'Б/у' }
 const STATUS_COLORS: Record<string, string> = {

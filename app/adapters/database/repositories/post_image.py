@@ -34,6 +34,11 @@ class PostImageRepository:
         result = await self.__session.execute(stmt)
         return [converter_post_image(result=row) for row in result.scalars().all()]
 
+    async def get_by_id(self, image_id: int) -> PostImageResponseDTO | None:
+        stmt = select(PostImageTable).where(PostImageTable.id == image_id)
+        result = await self.__session.scalar(stmt)
+        return converter_post_image(result=result) if result else None
+
     async def delete(self, image_id: int) -> None:
         stmt = delete(PostImageTable).where(PostImageTable.id == image_id)
         await self.__session.execute(stmt)

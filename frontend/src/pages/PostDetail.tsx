@@ -4,11 +4,11 @@ import { fetchPost, fetchPostImages, deletePost } from '../api/posts'
 import { addFavorite, removeFavorite, fetchFavorites } from '../api/favorites'
 import { createConversation } from '../api/chat'
 import { fetchReviews, getRatingSummary } from '../api/reviews'
+import { fetchUser } from '../api/users'
 import { useAuthStore } from '../store/auth'
 import StarRating from '../components/StarRating'
-import type { Post, PostImage, Review, RatingSummary } from '../types'
-
-const NO_IMAGE = 'https://via.placeholder.com/600x400?text=Нет+фото'
+import type { Post, PostImage, Review, RatingSummary, User } from '../types'
+import { NO_IMAGE } from '../lib/placeholder'
 
 const CONDITION_LABELS: Record<string, string> = { new: 'Новый', used: 'Б/у' }
 const STATUS_LABELS: Record<string, string> = { active: 'Активно', sold: 'Продано', archived: 'Архив', moderation: 'На проверке' }
@@ -24,6 +24,7 @@ export default function PostDetail() {
   const [isFav, setIsFav] = useState(false)
   const [reviews, setReviews] = useState<Review[]>([])
   const [rating, setRating] = useState<RatingSummary | null>(null)
+  const [seller, setSeller] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [chatLoading, setChatLoading] = useState(false)
 
@@ -39,10 +40,12 @@ export default function PostDetail() {
       return Promise.all([
         fetchReviews(p.created_by_id),
         getRatingSummary(p.created_by_id),
+        fetchUser(p.created_by_id),
       ])
-    }).then(([rev, rat]) => {
+    }).then(([rev, rat, sel]) => {
       setReviews(rev)
       setRating(rat)
+      setSeller(sel)
     }).finally(() => setLoading(false))
 
     if (user) {
@@ -79,7 +82,7 @@ export default function PostDetail() {
   const isOwner = user?.id === post.created_by_id
 
   return (
-    <div className="flex gap-8">
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
       {/* Left */}
       <div className="flex-1 min-w-0 space-y-6">
         {/* Images */}
@@ -108,11 +111,11 @@ export default function PostDetail() {
         </div>
 
         {/* Title & Info */}
-        <div className="card p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">{post.title}</h1>
-              <div className="flex items-center gap-3 mt-1 text-sm text-avito-muted">
+        <div className="card p-4 sm:p-6">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold break-words">{post.title}</h1>
+              <div className="flex items-center gap-2 sm:gap-3 mt-1 text-xs sm:text-sm text-avito-muted flex-wrap">
                 <span>{post.city || 'Россия'}</span>
                 <span>•</span>
                 <span>{new Date(post.created_at).toLocaleDateString('ru-RU')}</span>
@@ -122,7 +125,7 @@ export default function PostDetail() {
                 )}
               </div>
             </div>
-            <div className="text-2xl font-bold text-avito-blue flex-shrink-0">
+            <div className="text-xl sm:text-2xl font-bold text-avito-blue flex-shrink-0">
               {post.price != null ? `${Number(post.price).toLocaleString('ru-RU')} ₽` : 'Договорная'}
             </div>
           </div>
@@ -163,7 +166,7 @@ export default function PostDetail() {
       </div>
 
       {/* Right sidebar */}
-      <div className="w-72 flex-shrink-0 space-y-4">
+      <div className="w-full lg:w-72 flex-shrink-0 space-y-4">
         <div className="card p-4 space-y-3">
           {isOwner ? (
             <>
@@ -185,11 +188,15 @@ export default function PostDetail() {
         <div className="card p-4">
           <h3 className="font-semibold mb-3 text-sm">Продавец</h3>
           <Link to={`/users/${post.created_by_id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-full bg-avito-blue flex items-center justify-center text-white font-semibold text-sm">
-              {post.created_by_id}
+            <div className="w-10 h-10 rounded-full bg-avito-blue overflow-hidden flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+              {seller?.avatar_url ? (
+                <img src={seller.avatar_url} alt="" className="w-full h-full object-cover" />
+              ) : (
+                seller?.username[0]?.toUpperCase() ?? post.created_by_id
+              )}
             </div>
-            <div>
-              <p className="text-sm font-medium">Продавец #{post.created_by_id}</p>
+            <div className="min-w-0">
+              <p className="text-sm font-medium truncate">{seller?.username ?? `Продавец #${post.created_by_id}`}</p>
               {rating && rating.total_reviews > 0 && (
                 <div className="flex items-center gap-1 mt-0.5">
                   <StarRating rating={rating.average_rating} />

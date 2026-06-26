@@ -11,6 +11,7 @@ export default function Home() {
   const [total, setTotal] = useState(0)
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
+  const [showFilters, setShowFilters] = useState(false)
 
   const page = Number(searchParams.get('page') || 1)
   const q = searchParams.get('q') || ''
@@ -42,9 +43,16 @@ export default function Home() {
   const totalPages = Math.ceil(total / 20)
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+      <button
+        onClick={() => setShowFilters(s => !s)}
+        className="btn-secondary w-full text-sm lg:hidden"
+      >
+        {showFilters ? 'Скрыть фильтры' : 'Фильтры'}
+      </button>
+
       {/* Sidebar */}
-      <aside className="w-60 flex-shrink-0 space-y-4">
+      <aside className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-60 flex-shrink-0 space-y-4`}>
         <div className="card p-4 space-y-3">
           <h3 className="font-semibold text-sm text-avito-muted uppercase tracking-wide">Категории</h3>
           <button
@@ -104,7 +112,7 @@ export default function Home() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="card animate-pulse">
                 <div className="aspect-[4/3] bg-gray-200" />
@@ -123,14 +131,14 @@ export default function Home() {
             <p className="text-sm mt-1">Попробуйте изменить фильтры</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {posts.map(post => <PostCard key={post.id} post={post} />)}
           </div>
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex flex-wrap justify-center gap-2 mt-8">
             {Array.from({ length: Math.min(totalPages, 10) }).map((_, i) => {
               const p = i + 1
               return (

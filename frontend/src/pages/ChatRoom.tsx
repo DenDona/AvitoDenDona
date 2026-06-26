@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { fetchMessages, sendMessage } from '../api/chat'
+import { fetchConversations, fetchMessages, sendMessage } from '../api/chat'
+import { fetchUser } from '../api/users'
 import { useAuthStore } from '../store/auth'
-import type { Message } from '../types'
+import type { Message, User } from '../types'
 
 export default function ChatRoom() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { user, token } = useAuthStore()
   const [messages, setMessages] = useState<Message[]>([])
+  const [other, setOther] = useState<User | null>(null)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -18,6 +20,12 @@ export default function ChatRoom() {
     if (!user || !id) { navigate('/login'); return }
     const cid = Number(id)
     fetchMessages(cid).then(setMessages)
+    fetchConversations().then(convs => {
+      const conv = convs.find(c => c.id === cid)
+      if (!conv) return
+      const otherId = user.id === conv.buyer_id ? conv.seller_id : conv.buyer_id
+      fetchUser(otherId).then(setOther)
+    })
 
     const apiUrl = import.meta.env.VITE_API_URL ?? '/v1'
     const wsBase = apiUrl.replace(/^https?/, (p) => (p === 'https' ? 'wss' : 'ws'))
@@ -53,7 +61,7 @@ export default function ChatRoom() {
         {/* Header */}
         <div className="p-4 border-b border-avito-border flex items-center gap-3">
           <button onClick={() => navigate('/chat')} className="text-avito-muted hover:text-avito-blue">← Назад</button>
-          <h2 className="font-semibold">Диалог #{id}</h2>
+          <h2 className="font-semibold truncate">{other?.username ?? `Диалог #${id}`}</h2>
         </div>
 
         {/* Messages */}
@@ -65,7 +73,7 @@ export default function ChatRoom() {
             const isMe = m.sender_id === user?.id
             return (
               <div key={m.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-sm rounded-2xl px-4 py-2.5 text-sm ${isMe ? 'bg-avito-blue text-white rounded-br-sm' : 'bg-gray-100 text-avito-text rounded-bl-sm'}`}>
+                <div className={`max-w-[80%] sm:max-w-sm rounded-2xl px-4 py-2.5 text-sm ${isMe ? 'bg-avito-blue text-white rounded-br-sm' : 'bg-gray-100 text-avito-text rounded-bl-sm'}`}>
                   <p>{m.text}</p>
                   <p className={`text-xs mt-1 ${isMe ? 'text-blue-200' : 'text-avito-muted'}`}>
                     {new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}

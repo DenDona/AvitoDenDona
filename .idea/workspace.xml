@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a5330b2d-06bf-4e17-bcb8-5b92299278f2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/adapters/database/converters/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/adapters/database/converters/users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/adapters/database/repositories/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/adapters/di/providers/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/dto/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/dto/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/enums/user_role.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/interfaces/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/interfaces/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/application/services/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ports/rest/api/v1/endpoints/post.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ports/rest/api/v1/schema.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ports/rest/api/v1/schemas/post.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/adapters/database/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/adapters/database/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/adapters/database/mixins.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/adapters/database/mixins.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/adapters/database/tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/adapters/database/tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/cammon/exceptions/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/cammon/exceptions/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uv.lock" beforeDir="false" afterPath="$PROJECT_DIR$/uv.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;DenDona&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DenDona/AvitoDenDona.git&quot;,
+    &quot;accountId&quot;: &quot;17969197-a2fe-49a9-9fb9-6d4c22a867d7&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3BP5BFmsjAjJfbIvjt6p8lhHfoM" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;R1-1&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.29346.142" />
+        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a5330b2d-06bf-4e17-bcb8-5b92299278f2" name="Changes" comment="" />
+      <created>1774377734908</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774377734908</updated>
+      <workItem from="1774377735759" duration="4000" />
+      <workItem from="1774377766368" duration="2000" />
+      <workItem from="1774418093113" duration="21000" />
+      <workItem from="1775113173227" duration="312000" />
+      <workItem from="1775242938681" duration="33000" />
+      <workItem from="1782458593517" duration="1582000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

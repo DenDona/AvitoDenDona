@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/v1': { target: 'http://app:8000', changeOrigin: true },
-      '/static': { target: 'http://app:8000', changeOrigin: true },
+      '/v1': { target: 'http://localhost:8000', changeOrigin: true },
+      '/static': { target: 'http://localhost:8000', changeOrigin: true },
     },
   },
   build: { outDir: 'dist' },

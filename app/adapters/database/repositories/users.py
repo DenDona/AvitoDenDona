@@ -1,11 +1,11 @@
 from typing import Sequence
 
-from sqlalchemy import or_, select, insert
+from sqlalchemy import or_, select, insert, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.database.converters.users import converter_user, converter_user_with_password
 from app.adapters.database.tables import UserTable
-from app.application.dto.user import UserCreateDTO, UserResponseDTO, UserWithPasswordDTO
+from app.application.dto.user import UserCreateDTO, UserResponseDTO, UserWithPasswordDTO, UserUpdateDTO
 from app.application.interfaces.auth import IUserRepository
 
 
@@ -40,6 +40,18 @@ class UserRepository(IUserRepository):
                 email=user_dto.email,
                 hashed_password=user_dto.hashed_password,
             )
+        ).returning(UserTable)
+        result = (await self.__session.scalars(stmt)).one()
+        await self.__session.commit()
+        await self.__session.refresh(result)
+        return converter_user(result)
+
+    async def update_profile(self, user_id: int, dto: UserUpdateDTO) -> UserResponseDTO:
+        update_values = dto.to_dict()
+        stmt = (
+            update(UserTable)
+            .where(UserTable.id == user_id)
+            .values(**update_values)
         ).returning(UserTable)
         result = (await self.__session.scalars(stmt)).one()
         await self.__session.commit()

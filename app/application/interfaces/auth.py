@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 
-from app.application.dto.user import UserCreateDTO, UserResponseDTO, UserWithPasswordDTO
+from app.application.dto.user import UserCreateDTO, UserResponseDTO, UserWithPasswordDTO, UserUpdateDTO
 
 
 class IUserRepository(ABC):
@@ -24,6 +24,10 @@ class IUserRepository(ABC):
 
     @abstractmethod
     async def create(self, user_dto: UserCreateDTO) -> UserResponseDTO:
+        pass
+
+    @abstractmethod
+    async def update_profile(self, user_id: int, dto: UserUpdateDTO) -> UserResponseDTO:
         pass
 
     @abstractmethod

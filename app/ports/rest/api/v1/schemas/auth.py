@@ -7,10 +7,17 @@ class RegisterRequest(BaseSchema):
     email: str | None = None
 
 
+class UserUpdateRequest(BaseSchema):
+    phone: str | None = None
+    avatar_url: str | None = None
+
+
 class UserResponse(BaseSchema):
     id: int
     username: str
     email: str | None
+    phone: str | None = None
+    avatar_url: str | None = None
 
 
 class LoginRequest(BaseSchema):

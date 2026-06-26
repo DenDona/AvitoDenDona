@@ -6,10 +6,10 @@ from fastapi import APIRouter, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette import status
 
-from app.application.dto.user import UserResponseDTO
+from app.application.dto.user import UserResponseDTO, UserUpdateDTO
 from app.application.services.auth_service import AuthService
 from app.application.services.users import UserService
-from app.ports.rest.api.v1.schemas.auth import UserResponse
+from app.ports.rest.api.v1.schemas.auth import UserResponse, UserUpdateRequest
 
 
 user_router = APIRouter(prefix="/users", tags=["user"], route_class=DishkaRoute)
@@ -25,3 +25,16 @@ async def fetch_users(
     current_user: UserResponseDTO = await auth_service.get_user_from_token(credentials.credentials)
     users = await service.fetch_users(user=current_user)
     return [UserResponse.model_validate(u) for u in users]
+
+
+@user_router.patch("/me", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def update_profile(
+    payload: UserUpdateRequest,
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(bearer_scheme)],
+    auth_service: FromDishka[AuthService],
+    service: FromDishka[UserService],
+) -> UserResponse:
+    current_user: UserResponseDTO = await auth_service.get_user_from_token(credentials.credentials)
+    dto = UserUpdateDTO(**payload.model_dump(exclude_unset=True))
+    user = await service.update_profile(user_id=current_user.id, dto=dto)
+    return UserResponse.model_validate(user)

@@ -12,6 +12,7 @@ dependencies = [
     "mypy>=1.20.0",
     "pydantic-settings",
     "pyjwt",
+    "python-multipart",
     "redis",
     "ruff>=0.15.8",
     "sqlalchemy",

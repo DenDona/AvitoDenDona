@@ -9,7 +9,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="bg-white border-t border-avito-border py-6 text-center text-xs text-avito-muted">
-        © 2024 Avito — объявления в России
+        © 2026 DenDona Avito
       </footer>
     </div>
   )
